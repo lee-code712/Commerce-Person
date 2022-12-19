@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.digital.v3.sql.mapper.PersonMapper">
+	
+	<!--  ============== Person 관련 질의문 ================  -->
+	
+	<insert id="createPerson" parameterType="PersonVO">
+	    INSERT INTO person (personid, personname, gender, password, createdate, updatedate)
+	    VALUES (#{personId}, #{personName}, #{gender}, #{password}, SYSDATE, SYSDATE)
+	</insert>
+	
+	<resultMap id="personMap" type="PersonVO">
+		<id column="personid" jdbcType="BIGINT" property="personId" javaType="long" />
+		<result column="personname" jdbcType="VARCHAR" property="personName" javaType="string" />
+		<result column="gender" jdbcType="VARCHAR" property="gender" javaType="string" />
+		<result column="password" jdbcType="VARCHAR" property="password" javaType="string" />
+		<collection property="addressVoList" ofType="AddressVO">
+			<id column="addressid" jdbcType="BIGINT" property="addressId" javaType="long" />
+			<result column="addressdetail" jdbcType="VARCHAR" property="addressDetail" javaType="String" />
+		</collection>
+		<collection property="phoneVoList" ofType="PhoneVO">
+			<id column="phoneid" jdbcType="BIGINT" property="phoneId" javaType="long" />
+			<result column="phonenumber" jdbcType="VARCHAR" property="phoneNumber" javaType="String" />
+		</collection>
+	</resultMap>
+	
+	<select id="getPersonByName" parameterType="string" resultMap="personMap">
+		SELECT p.personid, p.personname, p.gender, p.password,
+			a.addressid, a.addressdetail, ph.phoneid, ph.phonenumber
+		FROM person p
+			LEFT OUTER JOIN partyaddress pa ON pa.personid = p.personid
+			LEFT OUTER JOIN address a ON a.addressid = pa.addressid
+			LEFT OUTER JOIN partyphone pph ON pph.personid = p.personid
+			LEFT OUTER JOIN phone ph ON ph.phoneid = pph.phoneid 
+		WHERE p.personname = #{personName}
+	</select>
+	
+	<select id="getPersonById" parameterType="long" resultMap="personMap">
+		SELECT p.personid, p.personname, p.gender, p.password,
+			a.addressid, a.addressdetail, ph.phoneid, ph.phonenumber
+		FROM person p
+			LEFT OUTER JOIN partyaddress pa ON pa.personid = p.personid
+			LEFT OUTER JOIN address a ON a.addressid = pa.addressid
+			LEFT OUTER JOIN partyphone pph ON pph.personid = p.personid
+			LEFT OUTER JOIN phone ph ON ph.phoneid = pph.phoneid 
+		WHERE p.personid = #{personId}
+	</select>
+	
+	<!--  ============== Party Address 관련 질의문 ================  -->
+	
+	<insert id="createPartyAddress" parameterType="PartyAddressVO">
+	    INSERT INTO partyaddress (personid, addressid, createdate, updatedate)
+	    VALUES (#{personId}, #{addressId}, SYSDATE, SYSDATE)
+	</insert>
+	
+	<select id="isExistPartyAddress" parameterType="PartyAddressVO" resultType="int">
+		SELECT NVL(COUNT(personid), 0)
+		FROM partyaddress
+		WHERE personid = #{personId} AND addressid = #{addressId}
+	</select>
+	
+	<delete id="deletePartyAddress" parameterType="PartyAddressVO">
+		DELETE FROM partyaddress
+		WHERE personid = #{personId} AND addressid = #{addressId}
+	</delete>
+	
+		
+	<!--  ============== Party Phone 관련 질의문 ================  -->
+	
+	<insert id="createPartyPhone" parameterType="PartyPhoneVO">
+	    INSERT INTO partyphone (personid, phoneid, createdate, updatedate)
+	    VALUES (#{personId}, #{phoneId}, SYSDATE, SYSDATE)
+	</insert>
+	
+	<select id="isExistPartyPhone" parameterType="PartyPhoneVO" resultType="int">
+		SELECT NVL(COUNT(personid), 0)
+		FROM partyphone
+		WHERE personid = #{personId} AND phoneid = #{phoneId}
+	</select>
+	
+	<delete id="deletePartyPhone" parameterType="PartyPhoneVO">
+		DELETE FROM partyphone
+		WHERE personid = #{personId} AND phoneid = #{phoneId}
+	</delete>
+	
+</mapper>

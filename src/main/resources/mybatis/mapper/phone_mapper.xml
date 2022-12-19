@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.digital.v3.sql.mapper.PhoneMapper">
+
+	<insert id="createPhone" parameterType="PhoneVO">
+	    INSERT INTO phone (phoneid, phonenumber, createdate, updatedate)
+	    VALUES (#{phoneId}, #{phoneNumber}, SYSDATE, SYSDATE)
+	</insert>
+	
+	<select id="getPhoneByNumber" parameterType="string" resultType="PhoneVO">
+		SELECT phoneid, phonenumber
+		FROM phone
+		WHERE phonenumber = #{phoneNumber}
+	</select>
+	
+</mapper>
