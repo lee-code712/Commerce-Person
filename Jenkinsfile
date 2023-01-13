@@ -49,8 +49,8 @@ pipeline {
       steps {
         script {
           echo "Deploy App START"
-          sh "${KC} apply -f person_deployment_v2.yaml"
-          sh "${KC} set image deployment/commerce-yr-person-v2 commerce-yr-person=${IMG}:person-${BUILD_NUMBER} -n commerce-yr"
+          sh "${KC} apply -f person_deployment.yaml"
+          sh "${KC} set image deployment/commerce-yr-person commerce-yr-person=${IMG}:person-${BUILD_NUMBER} -n commerce-yr"
           echo "Deploy App END"
         }
       }
