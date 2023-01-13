@@ -18,4 +18,4 @@ WORKDIR /app/Commerce-Person
 RUN cd /app/Commerce-Person
 RUN gradle build
 
-CMD ["java", "-Djennifer.config=/app/agent.java/conf/person.conf","-javaagent:/app/agent.java/jennifer.jar", "-jar", "/app/Commerce-Person/build/libs/Commerce-Person-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-Djennifer.config=/app/agent.java/conf/person-v2.conf","-javaagent:/app/agent.java/jennifer.jar", "-jar", "/app/Commerce-Person/build/libs/Commerce-Person-0.0.1-SNAPSHOT.jar"]
