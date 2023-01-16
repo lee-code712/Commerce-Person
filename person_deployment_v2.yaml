@@ -27,13 +27,6 @@ spec:
       - image: 192.168.100.12/commerce-yr/commerce-yr-person-img:person-1
         imagePullPolicy: Always
         name: commerce-yr-person-v2
-        resources:
-          limits:
-            cpu: 200m
-            memory: "209715200"
-          requests:
-            cpu: 100m
-            memory: "104857600"
         securityContext:
           capabilities: {}
           privileged: false
@@ -44,7 +37,3 @@ spec:
       dnsPolicy: ClusterFirst
       imagePullSecrets:
       - name: commerce-cocktail-t8ceb0dry5v7
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
